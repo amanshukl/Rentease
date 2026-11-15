@@ -154,11 +154,12 @@ export default function CartPage() {
                   {/* Image */}
                   <div className="w-20 h-20 sm:w-28 sm:h-28 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                     <Image
-                      src={item.image}
+                      src={item.image || '/images/placeholder.svg'}
                       alt={item.name}
                       width={112}
                       height={112}
                       className="w-full h-full object-cover"
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/images/placeholder.svg'; }}
                     />
                   </div>
 

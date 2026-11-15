@@ -65,6 +65,14 @@ export default function ProductDetailPage() {
   const [selectedTenure, setSelectedTenure] = useState(3);
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [mainImgSrc, setMainImgSrc] = useState('/images/placeholder.svg');
+  const [thumbSrcs, setThumbSrcs] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (product) {
+      setMainImgSrc(product.images[selectedImage] || '/images/placeholder.svg');
+    }
+  }, [product, selectedImage]);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -73,7 +81,10 @@ export default function ProductDetailPage() {
         const res = await fetch(`/api/products/${params.id}`);
         if (!res.ok) throw new Error('Not found');
         const data = await res.json();
-        setProduct(data.product || data);
+        const p = data.product || data;
+        setProduct(p);
+        setMainImgSrc(p.images[0] || '/images/placeholder.svg');
+        setThumbSrcs(p.images.map((img: string) => img || '/images/placeholder.svg'));
 
         // Fetch related products
         const productData = data.product || data;
@@ -166,12 +177,13 @@ export default function ProductDetailPage() {
           <div>
             <div className="relative aspect-square bg-white rounded-2xl border border-gray-100 overflow-hidden mb-4">
               <Image
-                src={product.images[selectedImage] || '/images/placeholder.svg'}
+                src={mainImgSrc}
                 alt={product.name}
                 fill
                 className="object-contain p-4"
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
+                onError={() => setMainImgSrc('/images/placeholder.svg')}
               />
               {!inStock && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -190,7 +202,20 @@ export default function ProductDetailPage() {
                       selectedImage === idx ? 'border-primary-500' : 'border-gray-200 hover:border-gray-300'
                     )}
                   >
-                    <Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" sizes="80px" />
+                    <Image
+                      src={thumbSrcs[idx] || img || '/images/placeholder.svg'}
+                      alt={`${product.name} ${idx + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="80px"
+                      onError={() => {
+                        setThumbSrcs((prev) => {
+                          const next = [...prev];
+                          next[idx] = '/images/placeholder.svg';
+                          return next;
+                        });
+                      }}
+                    />
                   </button>
                 ))}
               </div>
