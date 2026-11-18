@@ -62,7 +62,8 @@ export async function GET(request: NextRequest) {
       ]);
 
       return NextResponse.json({ products, total, page, totalPages: Math.ceil(total / limit) });
-    } catch {
+    } catch (dbErr: any) {
+      console.error('MongoDB products error:', dbErr?.message || dbErr);
       // ── Offline / no-DB fallback: serve rich mock data ──────────────────
       let results = [...MOCK_PRODUCTS];
       if (category) results = results.filter((p) => p.category === category);
@@ -100,7 +101,7 @@ export async function GET(request: NextRequest) {
 
       const total = results.length;
       const paged = results.slice((page - 1) * limit, page * limit);
-      return NextResponse.json({ products: paged, total, page, totalPages: Math.ceil(total / limit), source: 'mock' });
+      return NextResponse.json({ products: paged, total, page, totalPages: Math.ceil(total / limit), source: 'mock', dbError: dbErr?.message || String(dbErr) });
     }
   } catch (error) {
     console.error('Products fetch error:', error);
