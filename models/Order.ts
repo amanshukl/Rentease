@@ -25,6 +25,12 @@ export interface IOrder extends Document {
   endDate: Date;
   returnRequested: boolean;
   returnDate?: Date;
+  extensionLogs?: Array<{
+    extendedMonths: number;
+    previousEndDate: Date;
+    newEndDate: Date;
+    requestedAt: Date;
+  }>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -99,6 +105,14 @@ const OrderSchema = new Schema<IOrder>(
       default: false,
     },
     returnDate: Date,
+    extensionLogs: [
+      {
+        extendedMonths: { type: Number, enum: [3, 6, 12], required: true },
+        previousEndDate: { type: Date, required: true },
+        newEndDate: { type: Date, required: true },
+        requestedAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,

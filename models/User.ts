@@ -4,8 +4,9 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'vendor' | 'admin';
   phone?: string;
+  city?: string;
   address?: {
     street: string;
     city: string;
@@ -44,10 +45,14 @@ const UserSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'vendor', 'admin'],
       default: 'user',
     },
     phone: {
+      type: String,
+      trim: true,
+    },
+    city: {
       type: String,
       trim: true,
     },

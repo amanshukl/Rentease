@@ -15,6 +15,7 @@ export interface IProduct extends Document {
   condition: 'new' | 'like-new' | 'good';
   availableStock: number;
   totalStock: number;
+  city: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -81,12 +82,8 @@ const ProductSchema = new Schema<IProduct>(
       min: 0,
       default: 0,
     },
-    totalStock: {
-      type: Number,
-      required: true,
-      min: 0,
-      default: 0,
-    },
+    totalStock: { type: Number, required: true, min: 0, default: 0 },
+    city: { type: String, required: true, default: 'Bangalore' },
     isActive: {
       type: Boolean,
       default: true,
@@ -98,6 +95,7 @@ const ProductSchema = new Schema<IProduct>(
 );
 
 ProductSchema.index({ category: 1, subcategory: 1 });
+ProductSchema.index({ city: 1 });
 ProductSchema.index({ name: 'text', description: 'text' });
 
 const Product: Model<IProduct> =

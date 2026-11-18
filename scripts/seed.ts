@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
   password: String,
   role: { type: String, default: 'user' },
   phone: String,
+  city: String,
   address: {
     street: String,
     city: String,
@@ -41,6 +42,7 @@ const ProductSchema = new mongoose.Schema({
   condition: { type: String, default: 'new' },
   availableStock: Number,
   totalStock: Number,
+  city: String,
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });
 
@@ -107,6 +109,7 @@ async function seed() {
   // ── Users ──
   const adminPassword = await bcrypt.hash('admin123', 12);
   const userPassword = await bcrypt.hash('user123', 12);
+  const vendorPassword = await bcrypt.hash('vendor123', 12);
 
   const admin = await User.create({
     name: 'Admin',
@@ -114,6 +117,7 @@ async function seed() {
     password: adminPassword,
     role: 'admin',
     phone: '+91 98765 00001',
+    city: 'Bangalore',
   });
 
   const testUser = await User.create({
@@ -130,9 +134,19 @@ async function seed() {
     },
   });
 
+  const vendor = await User.create({
+    name: 'Vendor Partner',
+    email: 'vendor@rentease.com',
+    password: vendorPassword,
+    role: 'vendor',
+    phone: '+91 98765 00003',
+    city: 'Mumbai',
+  });
+
   console.log('👤 Created users:');
-  console.log('   Admin: admin@rentease.com / admin123');
-  console.log('   User:  user@rentease.com / user123\n');
+  console.log('   Admin:  admin@rentease.com / admin123');
+  console.log('   User:   user@rentease.com / user123');
+  console.log('   Vendor: vendor@rentease.com / vendor123\n');
 
   // ── Products ──
   const products = [
@@ -349,7 +363,8 @@ async function seed() {
   ];
 
   const createdProducts = await Product.insertMany(
-    products.map((p) => {
+    products.map((p, index) => {
+      const cities = ['Bangalore', 'Mumbai', 'Delhi', 'Hyderabad', 'Pune', 'Chennai'];
       const imageMap: Record<string, string[]> = {
         'King Size Bed with Mattress': [
           'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80',
@@ -453,6 +468,7 @@ async function seed() {
         slug: slugify(p.name),
         images: imageMap[p.name] || ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'],
         availableStock: p.totalStock,
+        city: cities[index % cities.length],
       };
     })
   );
@@ -593,8 +609,9 @@ async function seed() {
   console.log('🎉 Database seeded successfully!');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('\n📋 Login Credentials:');
-  console.log('   Admin: admin@rentease.com / admin123');
-  console.log('   User:  user@rentease.com / user123\n');
+  console.log('   Admin:  admin@rentease.com / admin123');
+  console.log('   User:   user@rentease.com / user123');
+  console.log('   Vendor: vendor@rentease.com / vendor123\n');
 
   await mongoose.disconnect();
   process.exit(0);

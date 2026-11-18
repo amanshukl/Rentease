@@ -61,11 +61,27 @@ const TicketSchema = new Schema<ITicket>(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
+TicketSchema.virtual('resolutionTime').get(function () {
+  if (this.status === 'resolved' || this.status === 'closed') {
+    return this.updatedAt.getTime() - this.createdAt.getTime();
+  }
+  return null;
+});
+
 TicketSchema.index({ user: 1, status: 1 });
 TicketSchema.index({ status: 1 });
+
+TicketSchema.virtual('resolutionTime').get(function() {
+  if (this.status === 'resolved' || this.status === 'closed') {
+    return this.updatedAt.getTime() - this.createdAt.getTime();
+  }
+  return null;
+});
 
 const Ticket: Model<ITicket> =
   mongoose.models.Ticket || mongoose.model<ITicket>('Ticket', TicketSchema);
