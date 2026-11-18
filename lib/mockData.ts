@@ -84,7 +84,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     monthlyRent: 599,
     securityDeposit: 1500,
     images: [
-      'https://images.unsplash.com/photo-1617098474202-0d0d7f60c788?w=800&q=80',
+      'https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=800&q=80',
       'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&q=80',
       'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
       'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
@@ -137,7 +137,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
       'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=800&q=80',
       'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80',
       'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
-      'https://images.unsplash.com/photo-1487015307662-6ce28210782c?w=800&q=80',
+      'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80',
     ],
     features: ['Lumbar support', 'Adjustable armrests', 'Breathable mesh back', '360° swivel', 'Gas lift height adjustment'],
     dimensions: '26 × 26 × 48 inches',
@@ -286,7 +286,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     monthlyRent: 599,
     securityDeposit: 1500,
     images: [
-      'https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=800&q=80',
+      'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=800&q=80',
       'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=800&q=80',
       'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
       'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=800&q=80',
@@ -488,10 +488,10 @@ export const TESTIMONIALS = [
 export const CATEGORY_IMAGES: Record<string, string> = {
   Beds: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=600&q=80',
   Sofas: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80',
-  Tables: 'https://images.unsplash.com/photo-1617098474202-0d0d7f60c788?w=600&q=80',
+  Tables: 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=600&q=80',
   Chairs: 'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=600&q=80',
   Refrigerators: 'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=600&q=80',
   'Washing Machines': 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600&q=80',
-  TVs: 'https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=600&q=80',
+  TVs: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&q=80',
   ACs: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80',
 };

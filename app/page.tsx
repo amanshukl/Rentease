@@ -43,7 +43,7 @@ const categories = [
     name: 'Dining Sets',
     icon: Search,
     href: '/products?category=furniture&subcategory=Table',
-    image: 'https://images.unsplash.com/photo-1617098474202-0d0d7f60c788?w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=600&q=80',
     color: 'from-amber-600/80 to-amber-900/80',
   },
   {
@@ -71,7 +71,7 @@ const categories = [
     name: 'TVs',
     icon: Tv,
     href: '/products?category=appliance&subcategory=TV',
-    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&q=80',
     color: 'from-rose-600/80 to-rose-900/80',
   },
   {

@@ -379,7 +379,7 @@ async function seed() {
           'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80',
         ],
         '4-Seater Dining Table Set': [
-          'https://images.unsplash.com/photo-1617098474202-0d0d7f60c788?w=800&q=80',
+          'https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=800&q=80',
           'https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&q=80',
           'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
           'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
@@ -394,7 +394,7 @@ async function seed() {
           'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=800&q=80',
           'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&q=80',
           'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
-          'https://images.unsplash.com/photo-1487015307662-6ce28210782c?w=800&q=80',
+          'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80',
         ],
         '5-Tier Bookshelf': [
           'https://images.unsplash.com/photo-1580237541049-2d715a09486e?w=800&q=80',
@@ -427,7 +427,7 @@ async function seed() {
           'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
         ],
         'Mi 43-inch Smart TV 4A': [
-          'https://images.unsplash.com/photo-1593359677879-a4bb92f4834c?w=800&q=80',
+          'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=800&q=80',
           'https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=800&q=80',
           'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
           'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=800&q=80',
