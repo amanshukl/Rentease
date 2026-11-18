@@ -1,179 +1,163 @@
 # RentEase – Furniture & Appliance Rental Platform
 
-A modern, high-performance, full-stack web application designed for students and professionals to rent premium home furniture and appliances with zero heavy upfront investments.
+> **Zero-cost, production-ready full-stack web application** enabling students and young professionals to rent essential furniture and home appliances at affordable monthly subscriptions instead of paying high upfront costs.
 
-Built with a **100% Zero-Cost Architecture** utilizing free-tier cloud infrastructure (Vercel / Netlify + MongoDB Atlas M0 Free Tier).
-
----
-
-## 🚀 Key Features
-
-### 1. 🛍️ Product Catalog & Smart Browsing
-- Categorized browsing for **Furniture** (Beds, Sofas, Tables, Chairs, Bookshelves, Wardrobes) and **Appliances** (Refrigerators, Washing Machines, TVs, ACs, Microwaves, Geysers).
-- Real-time search across product titles and descriptions.
-- Dynamic filters: Category, Subcategory, Price Range, and Condition (New, Like New, Good).
-- Flexible sorting (Price: Low to High, High to Low, Newest).
-
-### 2. 🛋️ Product Detail & Tenure Pricing
-- Interactive tenure selector (**3, 6, 12 months**) with automatic tier discounting (up to 20% savings on longer tenures).
-- Transparent price breakdown: Monthly rental rate, refundable security deposit, and first-payment calculation.
-- Condition badges, high-resolution product showcase, dimensional specs, and feature checkmarks.
-- Related products recommendations.
-
-### 3. 🛒 Cart & Checkout Workflow
-- Real-time cart state with persistent `localStorage` synchronization.
-- Tenure adjustments and quantity updates directly inside the cart.
-- Complete delivery address collection (Street, City, State, PIN).
-- Simulated zero-cost checkout with stock reservation and instantaneous order confirmation.
-
-### 4. 📦 Customer Rental Management & Maintenance
-- **Active Rentals:** Track ongoing subscriptions, renewal windows, and scheduled dates.
-- **Return Requests:** One-click return scheduling with state transition locks.
-- **Order History:** Detailed order timeline from placement to fulfillment.
-- **Support & Maintenance Desk:** Raise tickets specifically linked to active orders and products with categorized issues (Maintenance, Return, Complaint).
-
-### 5. 🛡️ Vendor & Admin Management Dashboard
-- **Business Intelligence Analytics:** Live metrics for Total Active Rentals, Monthly Recurring Revenue (MRR), Open Support Tickets, Product counts, and Recent Orders.
-- **Inventory Control:** Add, edit, and deactivate inventory with automated slug generation and stock thresholds.
-- **Order Pipeline:** Manage order lifecycle states (`pending` → `active` → `completed` / `cancelled`).
-- **Ticket Resolution:** Inspect customer support requests, assign priority states, and reply with admin resolution notes.
+Built with **Next.js 14 (App Router)**, **React 18**, **Tailwind CSS**, **MongoDB Atlas (Mongoose)**, and **NextAuth.js** — engineered to deploy completely free on Vercel / Netlify + MongoDB Atlas M0.
 
 ---
 
-## 🛠️ Zero-Cost Technology Stack
+## Key Features
 
-| Layer | Technology | Free Tier Provider |
-| :--- | :--- | :--- |
-| **Frontend Framework** | Next.js 14 (App Router) + React 18 | [Vercel](https://vercel.com) (Hobby Plan) |
-| **Styling & Icons** | Tailwind CSS + Lucide Icons | Open-Source MIT |
-| **Backend & API** | Next.js Serverless Route Handlers | Vercel Edge / Serverless Functions |
-| **Database** | MongoDB + Mongoose with connection pooling | [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (M0 Free Cluster - 512MB) |
-| **Authentication** | NextAuth.js (Auth.js) Credentials + JWT Sessions | Open-Source MIT |
-| **Notifications** | React Hot Toast | Open-Source MIT |
+- **Responsive Multi-City Catalog**: Browse curated Furniture (Beds, Sofas, Tables, Desks, Chairs, Wardrobes, Bookshelves) and Appliances (Refrigerators, Washing Machines, Smart TVs, ACs, Microwaves, Water Purifiers, Geysers) with full-text search, category/subcategory filters, condition filters, **service city filtering** (`Bangalore`, `Mumbai`, `Delhi`, `Hyderabad`, `Pune`, `Chennai`), sorting, and pagination.
+- **Flexible Rental Tenures & Dynamic Pricing**: Product detail pages with multi-angle image galleries, transparent security deposits, and 3-, 6-, and 12-month tenure selectors with automatic discounts (10% off on 6 months, 20% off on 12 months).
+- **Cart & Validated Checkout**: Persistent shopping cart with live quantity/tenure updates, client- and server-side delivery address validation (street length & 6-digit Indian pincode verification), and automatic inventory reservation.
+- **Customer Dashboard & Rental Lifecycle**: Track active, pending, and completed orders; **extend active rental tenures** (+3/+6/+12 months) with audit history; schedule returns/pickups; and raise maintenance/support tickets.
+- **Role-Based Access Control (RBAC)**: Secure JWT session authentication supporting `user`, `vendor`, and `admin` roles with `bcryptjs` password hashing.
+- **Admin & Vendor Dashboard**:
+  - Full inventory CRUD with multi-image URL & local file upload preview + service city assignment.
+  - Order lifecycle management with automatic stock restoration on completion/cancellation.
+  - Maintenance & support ticket triage with status transitions and admin notes.
+  - **Live Business KPI Analytics**: Monthly Recurring Revenue (MRR), Active Rentals, Inventory Utilization Rate, Customer Retention Rate, Average Ticket Resolution Time, and Revenue by City.
+- **Offline-Resilient Fallback Layer**: Graceful fallback to rich mock catalog and analytics when MongoDB is offline or not yet seeded, plus reliable image `onError` fallbacks across every component.
 
 ---
 
-## 📋 Getting Started Locally
+## Tech Stack (100% Free-Tier Compatible)
 
-### 1. Prerequisites
-- **Node.js** v18.17.0+ installed
-- A free **MongoDB Atlas** account (or local MongoDB instance)
+| Layer | Technology |
+|-------|------------|
+| **Framework** | Next.js 14 (App Router, Serverless API Routes) |
+| **Frontend UI** | React 18, TypeScript, Tailwind CSS, Lucide React, React Hot Toast |
+| **Database** | MongoDB Atlas (M0 Free Tier) via Mongoose ODM |
+| **Authentication** | NextAuth.js (JWT Strategy + Credentials Provider) + `bcryptjs` |
+| **Hosting** | Vercel / Netlify Free Tier |
 
-### 2. Clone and Install
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js** v18+ and **npm**
+- A free **MongoDB Atlas** cluster (or local MongoDB instance)
+
+### Installation & Local Setup
+
 ```bash
-git clone <repository-url>
-cd rentease
+# 1. Clone the repository
+git clone https://github.com/amanshukl/Rentease.git
+cd Rentease
+
+# 2. Install dependencies
 npm install
-```
 
-### 3. Configure Environment Variables
-Create a `.env` file in the project root (see `.env.example`):
-```env
-# MongoDB Atlas Free Shared Tier (M0) Connection String
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/rentease?retryWrites=true&w=majority
+# 3. Configure environment variables
+cp .env.example .env
+# Edit .env and set your real MONGODB_URI and NEXTAUTH_SECRET
 
-# NextAuth.js Secret & Base URL
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=generate-a-secure-32-byte-secret-key-here
-
-# Public URL
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-> **Tip:** You can generate a random secret for `NEXTAUTH_SECRET` by running:
-> ```bash
-> openssl rand -base64 32
-> ```
-
-### 4. Seed the Database with Sample Data
-Run the built-in database seed script to populate sample furniture, appliances, demo users, orders, and tickets:
-```bash
+# 4. Seed the database with sample users, products, orders, and tickets
 npm run seed
-```
 
-### 5. Start the Development Server
-```bash
+# 5. Start the development server
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+Visit `http://localhost:3000` (or the port configured in `NEXTAUTH_URL`).
+
+### Available npm Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Starts the Next.js development server |
+| `npm run build` | Creates an optimized production build & runs TypeScript checks |
+| `npm run start` | Runs the compiled production server |
+| `npm run lint` | Runs Next.js ESLint checks |
+| `npm run seed` | Seeds MongoDB with users, 16 multi-city products, sample orders & tickets |
 
 ---
 
-## 🔑 Demo Accounts
+## Environment Variables
 
-Use these pre-configured credentials created by the seed script:
+Configure these variables in `.env` (never commit `.env` to version control):
 
-| Role | Email | Password | Access Rights |
-| :--- | :--- | :--- | :--- |
-| **Admin** | `admin@rentease.com` | `admin123` | Full access to `/admin` dashboard, inventory, orders, and tickets |
-| **Customer** | `user@rentease.com` | `user123` | Access to `/dashboard`, active rentals, cart, and support tickets |
-
----
-
-## ☁️ Free Tier Deployment Guide
-
-### Deploying on Vercel (Recommended, 100% Free)
-
-1. **Push your code to GitHub / GitLab**.
-2. Go to [Vercel Dashboard](https://vercel.com) and click **"Add New Project"**.
-3. Import your repository.
-4. Set the **Framework Preset** to **Next.js**.
-5. Add the following **Environment Variables**:
-   - `MONGODB_URI`: Your MongoDB Atlas cluster connection string.
-   - `NEXTAUTH_URL`: Your Vercel production domain (e.g. `https://your-app.vercel.app`).
-   - `NEXTAUTH_SECRET`: A 32-character secure secret string.
-6. Click **Deploy**. Vercel will build and launch your application globally on its high-speed Edge CDN.
-
-### Setting Up Free MongoDB Atlas (M0 Tier)
-1. Sign up at [mongodb.com/atlas](https://www.mongodb.com/cloud/atlas).
-2. Create a new project and select **Create a Deployment** -> **M0 (Free Shared Tier)**.
-3. Under **Security > Database Access**, add a database user with Read/Write privileges.
-4. Under **Security > Network Access**, click **Add IP Address** and select **Allow Access from Anywhere (`0.0.0.0/0`)** so serverless lambdas can connect seamlessly.
-5. In your cluster dashboard, click **Connect > Drivers > Node.js** to copy your connection URI string into `MONGODB_URI`.
+| Variable | Required | Description | Example |
+|----------|----------|-------------|---------|
+| `MONGODB_URI` | Yes | MongoDB Atlas connection string | `mongodb+srv://<user>:<pass>@<cluster>.mongodb.net/rentease?retryWrites=true&w=majority` |
+| `NEXTAUTH_URL` | Yes | Canonical base URL of the app | `http://localhost:3001` |
+| `NEXTAUTH_SECRET` | Yes | 32+ char secret for signing JWT sessions | `openssl rand -base64 32` |
+| `NEXT_PUBLIC_APP_URL` | Yes | Public client-facing URL | `http://localhost:3001` |
 
 ---
 
-## 📂 Project Structure
+## Default Seeded Credentials
+
+After running `npm run seed`:
+
+| Role | Email | Password |
+|------|-------|----------|
+| **Admin** | `admin@rentease.com` | `admin123` |
+| **Vendor** | `vendor@rentease.com` | `vendor123` |
+| **Customer** | `user@rentease.com` | `user123` |
+
+---
+
+## REST API Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| `POST` | `/api/auth/signup` | Register a new customer account | Public |
+| `POST` | `/api/auth/[...nextauth]` | NextAuth.js sign-in, sign-out & session management | Public |
+| `GET` | `/api/products` | List active products with `category`, `subcategory`, `condition`, `city`, `search`, `minPrice`, `maxPrice`, `sort`, `page`, `limit` | Public |
+| `GET` | `/api/products/[id]` | Retrieve single product details by ID or slug | Public |
+| `GET` | `/api/orders` | List user's orders (or all orders for admin) | Authenticated |
+| `POST` | `/api/orders` | Create a new rental order, validate address & decrement stock | Authenticated |
+| `GET` | `/api/orders/[id]` | Fetch single order details (owner or admin) | Authenticated |
+| `PATCH` | `/api/orders/[id]` | Update status (admin), extend tenure (`action: "extend"`), or request return (`action: "return"`) | Authenticated |
+| `GET` | `/api/tickets` | List user's maintenance tickets (or all for admin) | Authenticated |
+| `POST` | `/api/tickets` | Submit a maintenance, return, or complaint ticket | Authenticated |
+| `GET` | `/api/tickets/[id]` | Fetch single ticket details | Authenticated |
+| `PATCH` | `/api/tickets/[id]` | Update ticket status and admin resolution notes | Admin |
+| `GET` | `/api/admin/products` | List all products (including inactive) for inventory management | Admin |
+| `POST` | `/api/admin/products` | Add a new product with auto-generated unique slug | Admin |
+| `PATCH` | `/api/admin/products/[id]` | Update product pricing, stock, city, or metadata | Admin |
+| `DELETE` | `/api/admin/products/[id]` | Soft-delete product (`isActive: false`) | Admin |
+| `GET` | `/api/admin/analytics` | Compute live KPIs: MRR, active rentals, utilization, retention, resolution time, revenue by city | Admin |
+
+---
+
+## Architecture Overview
 
 ```
-rentease/
-├── app/
-│   ├── admin/               # Admin management portal
-│   │   ├── orders/          # Order pipeline management
-│   │   ├── products/        # Inventory control & creation
-│   │   └── tickets/         # Customer support center
-│   ├── api/                 # Serverless API endpoints
-│   │   ├── admin/           # Admin-only analytics & inventory APIs
-│   │   ├── auth/            # NextAuth credential handlers & registration
-│   │   ├── orders/          # Order placement, status, and return requests
-│   │   ├── products/        # Catalog querying, filtering, search
-│   │   └── tickets/         # Maintenance ticket workflows
-│   ├── auth/                # Sign In & Sign Up interfaces
-│   ├── cart/                # Cart summary & checkout workflow
-│   ├── dashboard/           # User dashboard (active subscriptions, tickets)
-│   ├── products/            # Catalog browsing & product detail views
-│   ├── globals.css          # Tailwind CSS custom component tokens
-│   ├── layout.tsx           # Global app layout with providers
-│   └── page.tsx             # High-conversion landing page
-├── components/              # Modular UI components (Navbar, Footer, Cards, Sidebar)
-├── context/                 # AuthProvider & CartContext
-├── lib/
-│   ├── auth.ts              # NextAuth configuration & credentials provider
-│   ├── db.ts                # Serverless-cached Mongoose connection pool
-│   └── utils.ts             # Currency, date, and tenure discount calculation helpers
-├── models/                  # Mongoose schemas (User, Product, Order, Ticket)
-├── public/                  # Static assets & SVG icons
-├── scripts/
-│   └── seed.ts              # Database seeding script
-├── vercel.json              # Vercel serverless deployment specification
-└── render.yaml              # Alternative Render.com free deployment spec
+Browser (Next.js App Router + React 18 + Tailwind CSS)
+        │
+        ▼
+Next.js Serverless API Routes (/app/api/*)
+  ├── NextAuth.js JWT Middleware & RBAC Session Guards
+  ├── Input Validation & Rental Lifecycle Business Logic
+  └── Cached Mongoose Connection Pool (maxPoolSize: 5)
+        │
+        ▼
+MongoDB Atlas (M0 Free Tier)
+  ├── users     (Auth, roles: user/vendor/admin, city, cart)
+  ├── products  (Catalog, pricing, stock, city, text & compound indexes)
+  ├── orders    (Subscriptions, address, extensionLogs, return tracking)
+  └── tickets   (Maintenance/return support, resolutionTime virtual)
 ```
+
+For deep technical documentation, schema diagrams, RBAC design, rental state machines, and KPI mathematical formulas, see [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md).
 
 ---
 
-## 🔒 Security & Reliability Design
+## Free-Tier Deployment (Vercel)
 
-- **Serverless Connection Caching:** Global connection pooling in `lib/db.ts` prevents connection exhaustion on MongoDB Atlas M0 free tier across serverless invocations.
-- **Password Hashing:** Salted bcrypt hashing (12 rounds) on all credential operations.
-- **Role-Based Authorization:** Server-level and route-level token validation ensuring admin surfaces are strictly restricted to admin roles.
-- **Stock Guarding:** Atomic stock updates and verification before order finalization to avoid overselling.
+1. Push your repository to GitHub.
+2. Import the repository on [Vercel](https://vercel.com/new).
+3. Add `MONGODB_URI`, `NEXTAUTH_URL` (your Vercel URL), `NEXTAUTH_SECRET`, and `NEXT_PUBLIC_APP_URL` in **Project Settings → Environment Variables**.
+4. Whitelist `0.0.0.0/0` in MongoDB Atlas **Network Access** for serverless functions.
+5. Click **Deploy** — Vercel automatically builds and deploys the Next.js application at zero cost.
+
+---
+
+## License
+
+MIT License. Free for personal, academic, and commercial use.
