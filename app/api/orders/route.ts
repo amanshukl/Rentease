@@ -81,6 +81,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (String(deliveryAddress.street).trim().length < 10) {
+      return NextResponse.json(
+        { error: 'Street address must be at least 10 characters' },
+        { status: 400 }
+      );
+    }
+
+    if (!/^[0-9]{6}$/.test(String(deliveryAddress.pincode).trim())) {
+      return NextResponse.json(
+        { error: 'Pincode must be a valid 6-digit number' },
+        { status: 400 }
+      );
+    }
+
     // Validate and process each item
     const orderItems = [];
     let totalMonthlyRent = 0;

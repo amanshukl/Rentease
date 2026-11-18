@@ -31,9 +31,32 @@ export default function CartPage() {
     state: '',
     pincode: '',
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderId, setOrderId] = useState('');
+
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    if (!address.street.trim()) {
+      newErrors.street = 'Street address is required';
+    } else if (address.street.trim().length < 10) {
+      newErrors.street = 'Street address must be at least 10 characters';
+    }
+    if (!address.city.trim()) {
+      newErrors.city = 'City is required';
+    }
+    if (!address.state.trim()) {
+      newErrors.state = 'State is required';
+    }
+    if (!address.pincode.trim()) {
+      newErrors.pincode = 'Pincode is required';
+    } else if (!/^[0-9]{6}$/.test(address.pincode.trim())) {
+      newErrors.pincode = 'Pincode must be a valid 6-digit number';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handlePlaceOrder = async () => {
     if (!session) {
@@ -41,8 +64,8 @@ export default function CartPage() {
       return;
     }
 
-    if (!address.street || !address.city || !address.state || !address.pincode) {
-      toast.error('Please fill in your delivery address');
+    if (!validateForm()) {
+      toast.error('Please fix the highlighted delivery address errors');
       return;
     }
 
@@ -262,36 +285,61 @@ export default function CartPage() {
                 Delivery Address
               </h3>
               <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Street address"
-                  value={address.street}
-                  onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                  className="input-field text-sm"
-                />
-                <div className="grid grid-cols-2 gap-3">
+                <div>
                   <input
                     type="text"
-                    placeholder="City"
-                    value={address.city}
-                    onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                    className="input-field text-sm"
+                    placeholder="Street address (min 10 chars)"
+                    value={address.street}
+                    onChange={(e) => {
+                      setAddress({ ...address, street: e.target.value });
+                      if (errors.street) setErrors({ ...errors, street: '' });
+                    }}
+                    className={`input-field text-sm ${errors.street ? 'border-red-500 focus:ring-red-500' : ''}`}
                   />
-                  <input
-                    type="text"
-                    placeholder="State"
-                    value={address.state}
-                    onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                    className="input-field text-sm"
-                  />
+                  {errors.street && <p className="text-xs text-red-600 mt-1">{errors.street}</p>}
                 </div>
-                <input
-                  type="text"
-                  placeholder="Pincode"
-                  value={address.pincode}
-                  onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
-                  className="input-field text-sm"
-                />
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="City"
+                      value={address.city}
+                      onChange={(e) => {
+                        setAddress({ ...address, city: e.target.value });
+                        if (errors.city) setErrors({ ...errors, city: '' });
+                      }}
+                      className={`input-field text-sm ${errors.city ? 'border-red-500 focus:ring-red-500' : ''}`}
+                    />
+                    {errors.city && <p className="text-xs text-red-600 mt-1">{errors.city}</p>}
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="State"
+                      value={address.state}
+                      onChange={(e) => {
+                        setAddress({ ...address, state: e.target.value });
+                        if (errors.state) setErrors({ ...errors, state: '' });
+                      }}
+                      className={`input-field text-sm ${errors.state ? 'border-red-500 focus:ring-red-500' : ''}`}
+                    />
+                    {errors.state && <p className="text-xs text-red-600 mt-1">{errors.state}</p>}
+                  </div>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Pincode (6 digits)"
+                    maxLength={6}
+                    value={address.pincode}
+                    onChange={(e) => {
+                      setAddress({ ...address, pincode: e.target.value });
+                      if (errors.pincode) setErrors({ ...errors, pincode: '' });
+                    }}
+                    className={`input-field text-sm ${errors.pincode ? 'border-red-500 focus:ring-red-500' : ''}`}
+                  />
+                  {errors.pincode && <p className="text-xs text-red-600 mt-1">{errors.pincode}</p>}
+                </div>
               </div>
             </div>
 

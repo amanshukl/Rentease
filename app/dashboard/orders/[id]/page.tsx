@@ -41,6 +41,12 @@ interface OrderDetail {
   endDate: string;
   returnRequested: boolean;
   returnDate?: string;
+  extensionLogs?: Array<{
+    extendedMonths: number;
+    previousEndDate: string;
+    newEndDate: string;
+    requestedAt: string;
+  }>;
   createdAt: string;
 }
 
@@ -56,6 +62,8 @@ export default function OrderDetailPage() {
   const params = useParams();
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [extending, setExtending] = useState(false);
+  const [extensionMonths, setExtensionMonths] = useState<number>(3);
 
   useEffect(() => {
     if (authStatus === 'unauthenticated') {
@@ -83,6 +91,28 @@ export default function OrderDetailPage() {
       toast.error('Failed to load order');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExtendTenure = async () => {
+    setExtending(true);
+    try {
+      const res = await fetch(`/api/orders/${params.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'extend', newTenure: extensionMonths }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`Rental extended by ${extensionMonths} months!`);
+        fetchOrder();
+      } else {
+        toast.error(data.error || 'Failed to extend tenure');
+      }
+    } catch {
+      toast.error('Failed to extend tenure');
+    } finally {
+      setExtending(false);
     }
   };
 
@@ -246,18 +276,66 @@ export default function OrderDetailPage() {
 
       {/* Actions */}
       {order.status === 'active' && !order.returnRequested && (
-        <div className="mt-6 card p-6 bg-orange-50 border-orange-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-gray-900">Want to return these items?</h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Submit a return request and we&apos;ll schedule a pickup.
-              </p>
+        <div className="mt-6 space-y-4">
+          <div className="card p-6 bg-primary-50 border-primary-200">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-semibold text-gray-900">Extend Rental Tenure</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Keep your furniture &amp; appliances longer without interruption.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <select
+                  value={extensionMonths}
+                  onChange={(e) => setExtensionMonths(Number(e.target.value))}
+                  className="input-field w-auto text-sm bg-white"
+                >
+                  <option value={3}>+3 Months</option>
+                  <option value={6}>+6 Months</option>
+                  <option value={12}>+12 Months</option>
+                </select>
+                <button
+                  onClick={handleExtendTenure}
+                  disabled={extending}
+                  className="btn-primary gap-2 whitespace-nowrap"
+                >
+                  {extending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Calendar className="w-4 h-4" />}
+                  Extend
+                </button>
+              </div>
             </div>
-            <button onClick={handleRequestReturn} className="btn-secondary gap-2">
-              <RotateCcw className="w-4 h-4" />
-              Request Return
-            </button>
+          </div>
+
+          <div className="card p-6 bg-orange-50 border-orange-200">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-semibold text-gray-900">Want to return these items?</h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  Submit a return request and we&apos;ll schedule a pickup.
+                </p>
+              </div>
+              <button onClick={handleRequestReturn} className="btn-secondary gap-2 whitespace-nowrap">
+                <RotateCcw className="w-4 h-4" />
+                Request Return
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {order.extensionLogs && order.extensionLogs.length > 0 && (
+        <div className="mt-6 card p-6">
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">Extension History</h3>
+          <div className="space-y-2 text-sm text-gray-600">
+            {order.extensionLogs.map((log, i) => (
+              <div key={i} className="flex flex-wrap justify-between py-2 border-b border-gray-100 last:border-0">
+                <span>Extended by <strong>+{log.extendedMonths} months</strong></span>
+                <span className="text-gray-500">
+                  {formatDate(log.previousEndDate)} → <strong>{formatDate(log.newEndDate)}</strong>
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       )}

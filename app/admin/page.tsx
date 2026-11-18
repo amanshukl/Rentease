@@ -15,6 +15,10 @@ import {
   Plus,
   Loader2,
   ArrowRight,
+  Gauge,
+  Clock,
+  RefreshCw,
+  MapPin,
 } from 'lucide-react';
 
 interface Analytics {
@@ -24,6 +28,10 @@ interface Analytics {
   monthlyRecurringRevenue: number;
   pendingTickets: number;
   totalUsers: number;
+  utilizationRate?: number;
+  avgResolutionTime?: number;
+  retentionRate?: number;
+  revenueByCity?: Record<string, number>;
   recentOrders: Array<{
     _id: string;
     user: { name: string; email: string };
@@ -117,8 +125,8 @@ export default function AdminDashboardPage() {
         />
       </div>
 
-      {/* Secondary Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      {/* Operational KPIs */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <StatsCard
           title="Total Orders"
           value={analytics.totalOrders}
@@ -131,7 +139,43 @@ export default function AdminDashboardPage() {
           icon={Users}
           color="green"
         />
+        <StatsCard
+          title="Utilization Rate"
+          value={`${analytics.utilizationRate ?? 0}%`}
+          icon={Gauge}
+          color="purple"
+        />
+        <StatsCard
+          title="Retention Rate"
+          value={`${analytics.retentionRate ?? 0}%`}
+          icon={RefreshCw}
+          color="green"
+        />
+        <StatsCard
+          title="Avg Resolution"
+          value={`${analytics.avgResolutionTime ?? 0}h`}
+          icon={Clock}
+          color="orange"
+        />
       </div>
+
+      {/* Revenue by City */}
+      {analytics.revenueByCity && Object.keys(analytics.revenueByCity).length > 0 && (
+        <div className="card p-6 mb-8">
+          <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-primary-600" />
+            Monthly Recurring Revenue by City
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {Object.entries(analytics.revenueByCity).map(([cityName, amount]) => (
+              <div key={cityName} className="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">{cityName}</p>
+                <p className="text-lg font-bold text-gray-900 mt-1">{formatCurrency(amount)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Recent Orders */}
       <div className="card">

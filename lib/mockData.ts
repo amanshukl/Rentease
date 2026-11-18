@@ -17,6 +17,7 @@ export interface MockProduct {
   condition: 'new' | 'like-new' | 'good';
   availableStock: number;
   totalStock: number;
+  city: string;
   isActive: boolean;
 }
 
@@ -44,6 +45,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 9,
     totalStock: 10,
+    city: 'Bangalore',
     isActive: true,
   },
   {
@@ -68,6 +70,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 7,
     totalStock: 8,
+    city: 'Mumbai',
     isActive: true,
   },
   {
@@ -92,6 +95,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 11,
     totalStock: 12,
+    city: 'Delhi',
     isActive: true,
   },
   {
@@ -116,6 +120,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 14,
     totalStock: 15,
+    city: 'Hyderabad',
     isActive: true,
   },
   {
@@ -140,6 +145,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'like-new',
     availableStock: 9,
     totalStock: 10,
+    city: 'Pune',
     isActive: true,
   },
   {
@@ -164,6 +170,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 11,
     totalStock: 12,
+    city: 'Chennai',
     isActive: true,
   },
   {
@@ -188,6 +195,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'like-new',
     availableStock: 5,
     totalStock: 6,
+    city: 'Bangalore',
     isActive: true,
   },
   {
@@ -212,6 +220,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 13,
     totalStock: 14,
+    city: 'Mumbai',
     isActive: true,
   },
 
@@ -238,6 +247,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 7,
     totalStock: 8,
+    city: 'Delhi',
     isActive: true,
   },
   {
@@ -262,6 +272,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 6,
     totalStock: 7,
+    city: 'Hyderabad',
     isActive: true,
   },
   {
@@ -286,6 +297,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'like-new',
     availableStock: 9,
     totalStock: 10,
+    city: 'Pune',
     isActive: true,
   },
   {
@@ -310,6 +322,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 4,
     totalStock: 5,
+    city: 'Chennai',
     isActive: true,
   },
   {
@@ -334,6 +347,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 11,
     totalStock: 12,
+    city: 'Bangalore',
     isActive: true,
   },
   {
@@ -358,6 +372,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 9,
     totalStock: 10,
+    city: 'Mumbai',
     isActive: true,
   },
   {
@@ -382,6 +397,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'like-new',
     availableStock: 7,
     totalStock: 8,
+    city: 'Delhi',
     isActive: true,
   },
   {
@@ -406,6 +422,7 @@ export const MOCK_PRODUCTS: MockProduct[] = [
     condition: 'new',
     availableStock: 8,
     totalStock: 9,
+    city: 'Hyderabad',
     isActive: true,
   },
 ];
@@ -419,6 +436,17 @@ export const MOCK_ANALYTICS = {
   monthlyRecurringRevenue: 68900,
   pendingTickets: 5,
   totalUsers: 128,
+  utilizationRate: 74.2,
+  avgResolutionTime: 14.5,
+  retentionRate: 62.5,
+  revenueByCity: {
+    Bangalore: 24500,
+    Mumbai: 16200,
+    Delhi: 11800,
+    Hyderabad: 8400,
+    Pune: 4900,
+    Chennai: 3100,
+  },
   recentOrders: [
     { _id: 'mock-ord-1', user: { name: 'Priya Sharma', email: 'priya@example.com' }, items: [{ productName: 'King Size Bed with Premium Mattress' }], totalMonthlyRent: 1299, status: 'active', createdAt: new Date(Date.now() - 86400000).toISOString() },
     { _id: 'mock-ord-2', user: { name: 'Rahul Verma', email: 'rahul@example.com' }, items: [{ productName: '3-Seater Fabric Sofa' }], totalMonthlyRent: 899, status: 'active', createdAt: new Date(Date.now() - 172800000).toISOString() },

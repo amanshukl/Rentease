@@ -10,7 +10,9 @@ import {
   ChevronRight,
   Package,
   Loader2,
+  MapPin,
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import ProductCard from '@/components/ProductCard';
 import { cn } from '@/lib/utils';
 
@@ -21,8 +23,8 @@ const categories = [
 ];
 
 const subcategories: Record<string, string[]> = {
-  furniture: ['bed', 'sofa', 'table', 'chair', 'wardrobe', 'bookshelf'],
-  appliance: ['refrigerator', 'washing-machine', 'tv', 'ac', 'microwave', 'geyser'],
+  furniture: ['bed', 'sofa', 'table', 'chair', 'wardrobe', 'bookshelf', 'desk'],
+  appliance: ['refrigerator', 'washing-machine', 'tv', 'ac', 'microwave', 'geyser', 'water-purifier'],
 };
 
 const conditions = [
@@ -30,6 +32,16 @@ const conditions = [
   { label: 'Brand New', value: 'new' },
   { label: 'Like New', value: 'like-new' },
   { label: 'Good', value: 'good' },
+];
+
+const cities = [
+  { label: 'All Cities', value: '' },
+  { label: 'Bangalore', value: 'Bangalore' },
+  { label: 'Mumbai', value: 'Mumbai' },
+  { label: 'Delhi', value: 'Delhi' },
+  { label: 'Hyderabad', value: 'Hyderabad' },
+  { label: 'Pune', value: 'Pune' },
+  { label: 'Chennai', value: 'Chennai' },
 ];
 
 const sortOptions = [
@@ -49,6 +61,7 @@ interface Product {
   securityDeposit: number;
   images: string[];
   brand?: string;
+  city?: string;
   condition: 'new' | 'like-new' | 'good';
   availableStock: number;
 }
@@ -68,6 +81,7 @@ function ProductsContent() {
   const [category, setCategory] = useState(searchParams.get('category') || '');
   const [subcategory, setSubcategory] = useState(searchParams.get('subcategory') || '');
   const [condition, setCondition] = useState(searchParams.get('condition') || '');
+  const [city, setCity] = useState(searchParams.get('city') || '');
   const [sort, setSort] = useState(searchParams.get('sort') || '');
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
 
@@ -79,6 +93,7 @@ function ProductsContent() {
       if (category) params.set('category', category);
       if (subcategory) params.set('subcategory', subcategory);
       if (condition) params.set('condition', condition);
+      if (city) params.set('city', city);
       if (sort) params.set('sort', sort);
       params.set('page', String(page));
       params.set('limit', '12');
@@ -91,11 +106,12 @@ function ProductsContent() {
       setTotalCount(data.total || 0);
     } catch (error) {
       console.error('Failed to fetch products:', error);
+      toast.error('Failed to load products. Please try again.');
       setProducts([]);
     } finally {
       setLoading(false);
     }
-  }, [search, category, subcategory, condition, sort, page]);
+  }, [search, category, subcategory, condition, city, sort, page]);
 
   useEffect(() => {
     fetchProducts();
@@ -108,10 +124,11 @@ function ProductsContent() {
     if (category) params.set('category', category);
     if (subcategory) params.set('subcategory', subcategory);
     if (condition) params.set('condition', condition);
+    if (city) params.set('city', city);
     if (sort) params.set('sort', sort);
     if (page > 1) params.set('page', String(page));
     router.replace(`/products?${params.toString()}`, { scroll: false });
-  }, [search, category, subcategory, condition, sort, page, router]);
+  }, [search, category, subcategory, condition, city, sort, page, router]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,11 +140,12 @@ function ProductsContent() {
     setCategory('');
     setSubcategory('');
     setCondition('');
+    setCity('');
     setSort('');
     setPage(1);
   };
 
-  const hasActiveFilters = search || category || subcategory || condition || sort;
+  const hasActiveFilters = search || category || subcategory || condition || city || sort;
 
   const availableSubcategories = category ? subcategories[category] || [] : [
     ...subcategories.furniture,
@@ -204,6 +222,30 @@ function ProductsContent() {
               className={cn(
                 'block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors',
                 condition === c.value
+                  ? 'bg-primary-50 text-primary-700 font-medium'
+                  : 'text-gray-600 hover:bg-gray-50'
+              )}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Service City */}
+      <div>
+        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wider flex items-center gap-1.5">
+          <MapPin className="w-3.5 h-3.5 text-primary-600" />
+          Service City
+        </h3>
+        <div className="space-y-1.5">
+          {cities.map((c) => (
+            <button
+              key={c.value}
+              onClick={() => { setCity(c.value); setPage(1); }}
+              className={cn(
+                'block w-full text-left px-3 py-2 rounded-lg text-sm transition-colors',
+                city === c.value
                   ? 'bg-primary-50 text-primary-700 font-medium'
                   : 'text-gray-600 hover:bg-gray-50'
               )}

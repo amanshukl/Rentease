@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth';
 import dbConnect from '@/lib/db';
 import Order from '@/models/Order';
+import Product from '@/models/Product';
 
 export async function GET(
   request: NextRequest,
@@ -122,10 +123,52 @@ export async function PATCH(
       }
 
       order.status = body.status;
+
+      // Restore product inventory when rental is completed or cancelled
+      if (body.status === 'completed' || body.status === 'cancelled') {
+        for (const item of order.items) {
+          await Product.findByIdAndUpdate(item.product, {
+            $inc: { availableStock: item.quantity },
+          });
+        }
+      }
+    }
+
+    // Users (or admins) can extend rental tenure for active orders
+    if ((isOwner || isAdmin) && body.action === 'extend') {
+      if (order.status !== 'active') {
+        return NextResponse.json(
+          { error: 'Can only extend tenure for active orders' },
+          { status: 400 }
+        );
+      }
+
+      const extendMonths = Number(body.newTenure);
+      if (![3, 6, 12].includes(extendMonths)) {
+        return NextResponse.json(
+          { error: 'Extension tenure must be 3, 6, or 12 months' },
+          { status: 400 }
+        );
+      }
+
+      const previousEndDate = new Date(order.endDate);
+      const newEndDate = new Date(order.endDate);
+      newEndDate.setMonth(newEndDate.getMonth() + extendMonths);
+      order.endDate = newEndDate;
+
+      if (!order.extensionLogs) {
+        order.extensionLogs = [];
+      }
+      order.extensionLogs.push({
+        extendedMonths: extendMonths,
+        previousEndDate,
+        newEndDate,
+        requestedAt: new Date(),
+      });
     }
 
     // Users can request return (only for active orders)
-    if (isOwner && body.returnRequested) {
+    if (isOwner && (body.returnRequested || body.action === 'return')) {
       if (order.status !== 'active') {
         return NextResponse.json(
           { error: 'Can only request return for active orders' },
@@ -134,7 +177,7 @@ export async function PATCH(
       }
 
       order.returnRequested = true;
-      order.returnDate = new Date();
+      order.returnDate = body.returnDate ? new Date(body.returnDate) : new Date();
     }
 
     // Non-admin users cannot directly change status

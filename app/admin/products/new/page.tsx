@@ -13,6 +13,8 @@ const subcategories: Record<string, string[]> = {
   appliance: ['Refrigerator', 'Washing Machine', 'TV', 'AC', 'Microwave', 'Water Purifier', 'Geyser'],
 };
 
+const SERVICE_CITIES = ['Bangalore', 'Mumbai', 'Delhi', 'Hyderabad', 'Pune', 'Chennai'];
+
 const FALLBACK_IMG = '/images/placeholder.svg';
 
 function AddProductContent() {
@@ -32,6 +34,7 @@ function AddProductContent() {
     securityDeposit: '',
     brand: '',
     condition: 'new',
+    city: 'Bangalore',
     totalStock: '',
     dimensions: '',
     features: '',
@@ -64,6 +67,7 @@ function AddProductContent() {
           securityDeposit: String(p.securityDeposit || ''),
           brand: p.brand || '',
           condition: p.condition || 'new',
+          city: p.city || 'Bangalore',
           totalStock: String(p.totalStock || ''),
           dimensions: p.dimensions || '',
           features: (p.features || []).join(', '),
@@ -121,6 +125,7 @@ function AddProductContent() {
       securityDeposit: Number(form.securityDeposit),
       brand: form.brand || undefined,
       condition: form.condition,
+      city: form.city,
       totalStock: Number(form.totalStock),
       dimensions: form.dimensions || undefined,
       features: form.features.split(',').map((f) => f.trim()).filter(Boolean),
@@ -392,6 +397,19 @@ function AddProductContent() {
 
             {/* Extras */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Service City *</label>
+                <select
+                  value={form.city}
+                  onChange={(e) => setForm({ ...form, city: e.target.value })}
+                  className="input-field"
+                  required
+                >
+                  {SERVICE_CITIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Dimensions</label>
                 <input

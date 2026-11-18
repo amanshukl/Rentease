@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, Star } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { formatCurrency, calculateRentalPrice, cn } from '@/lib/utils';
 
 const FALLBACK_IMG = '/images/placeholder.svg';
@@ -19,6 +19,7 @@ interface ProductCardProps {
     securityDeposit: number;
     images: string[];
     brand?: string;
+    city?: string;
     condition: 'new' | 'like-new' | 'good';
     availableStock: number;
   };
@@ -99,9 +100,17 @@ export default function ProductCard({ product }: ProductCardProps) {
                 From {formatCurrency(discountedPrice)}/mo on 12-month plan
               </p>
             )}
-            <p className="text-xs text-gray-400 mt-1">
-              Deposit: {formatCurrency(product.securityDeposit)}
-            </p>
+            <div className="flex items-center justify-between mt-1">
+              <p className="text-xs text-gray-400">
+                Deposit: {formatCurrency(product.securityDeposit)}
+              </p>
+              {product.city && (
+                <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+                  <MapPin className="w-3 h-3 text-primary-500" />
+                  {product.city}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
